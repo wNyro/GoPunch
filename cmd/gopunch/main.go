@@ -3,10 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
-	"time"
-
 	"github.com/wnyro/gopunch/internal/checker"
+	"os"
+	"os/signal"
+	"sync"
+	"syscall"
+	"time"
 )
 
 func main() {
@@ -15,27 +17,53 @@ func main() {
 
 	args := flag.Args()
 	if len(args) < 1 {
-		fmt.Println("Usage: gopunch --interval 3 https://example.com")
+		fmt.Println("Usage: gopunch --interval 3 https://example.com [https://another.com ...]")
 		os.Exit(1)
 	}
 
-	url := args[len(args)-1]
+	urls := args
 
-	runCheck := func() {
-		status, elapsed, err := checker.CheckURL(url)
-		if err != nil {
-			fmt.Printf("❌ Error: %s\n", err)
-			return
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+
+	runCheck := func(urls []string) {
+		var wg sync.WaitGroup
+		wg.Add(len(urls))
+
+		for _, url := range urls {
+			go func(u string) {
+				defer wg.Done()
+				status, elapsed, err := checker.CheckURL(u)
+				if err != nil {
+					fmt.Printf("❌ Error for %s: %s\n", u, err)
+					return
+				}
+				fmt.Printf("✅ %s - Status: %s (%d ms)\n", u, status, elapsed)
+			}(url)
 		}
-		fmt.Printf("✅ Status: %s (%d ms)\n", status, elapsed)
+		wg.Wait()
 	}
 
 	if *interval == 0 {
-		runCheck()
+		runCheck(urls)
 	} else {
+		ticker := time.NewTicker(time.Duration(*interval) * time.Second)
+		defer ticker.Stop()
+
 		for {
-			runCheck()
-			time.Sleep(time.Duration(*interval) * time.Second)
+			select {
+			case <-sigChan:
+				fmt.Println("\nExiting...")
+				return
+			default:
+				runCheck(urls)
+				select {
+				case <-sigChan:
+					fmt.Println("\nExiting...")
+					return
+				case <-ticker.C:
+				}
+			}
 		}
 	}
 }
