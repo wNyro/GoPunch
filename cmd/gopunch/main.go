@@ -10,8 +10,8 @@ import (
 	"github.com/wnyro/gopunch/internal/stats"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
+	"strings"
 	"time"
 )
 
@@ -29,6 +29,7 @@ func main() {
 
 	var cfg *config.Config
 	urls := []string{}
+	urlConfigs := make(map[string]config.URLConfig)
 	if *configFile != "" {
 		var err error
 		cfg, err = config.LoadConfig(*configFile)
@@ -37,6 +38,9 @@ func main() {
 			os.Exit(1)
 		}
 		urls = cfg.URLs
+		for _, uc := range cfg.URLConfigs {
+			urlConfigs[uc.URL] = uc
+		}
 		if *interval == 0 {
 			*interval = cfg.Interval
 		}
@@ -59,6 +63,7 @@ func main() {
 		for _, arg := range flag.Args() {
 			if strings.HasPrefix(arg, "http://") || strings.HasPrefix(arg, "https://") {
 				urls = append(urls, arg)
+				urlConfigs[arg] = config.URLConfig{URL: arg, Method: *method, Data: *data}
 			}
 		}
 	}
@@ -73,24 +78,11 @@ func main() {
 	statistics := stats.NewStats()
 	runner.SetConcurrency(*concurrency)
 
-	if cfg != nil && len(cfg.URLConfigs) > 0 {
-		for _, urlCfg := range cfg.URLConfigs {
-			for _, url := range urls {
-				if url == urlCfg.URL {
-					checker.SetMethod(urlCfg.Method, urlCfg.Data)
-					break
-				}
-			}
-		}
-	} else {
-		checker.SetMethod(*method, *data)
-	}
-
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
 
 	if *interval == 0 {
-		runner.RunCheck(urls, logger, statistics, *verbose)
+		runner.RunCheck(urls, urlConfigs, logger, statistics, *verbose)
 		stats.PrintStats(statistics)
 		if *export != "" {
 			if err := statistics.Export(*export); err != nil {
@@ -98,7 +90,7 @@ func main() {
 			}
 		}
 	} else {
-		runner.RunWithInterval(urls, time.Duration(*interval)*time.Second, logger, statistics, *verbose, sigChan)
+		runner.RunWithInterval(urls, urlConfigs, time.Duration(*interval)*time.Second, logger, statistics, *verbose, sigChan)
 		go func() {
 			<-sigChan
 			if *export != "" {
