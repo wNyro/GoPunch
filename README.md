@@ -21,7 +21,7 @@ GoPunch is a lightweight CLI utility written in Go for checking the uptime and r
 1. Clone the repo:
 
 ```bash
-git clone https://github.com/wnyro/gopunch/gopunch.git
+git clone https://github.com/wnyro/GoPunch.git
 cd gopunch
 ````
 
