@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"time"
 )
 
 type Stats struct {
@@ -89,12 +90,17 @@ func PrintStats(s *Stats) {
 func (s *Stats) Export(filename string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
+	timestamp := time.Now().Format("20060102_150405")
 	ext := filepath.Ext(filename)
+	base := filename[:len(filename)-len(ext)]
+	timedFilename := fmt.Sprintf("%s_%s%s", base, timestamp, ext)
+
 	switch ext {
 	case ".csv":
-		return s.exportCSV(filename)
+		return s.exportCSV(timedFilename)
 	case ".json":
-		return s.exportJSON(filename)
+		return s.exportJSON(timedFilename)
 	default:
 		return fmt.Errorf("unsupported export format: %s", ext)
 	}

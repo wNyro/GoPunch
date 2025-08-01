@@ -10,6 +10,7 @@ import (
 	"github.com/wnyro/gopunch/internal/stats"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
@@ -72,9 +73,17 @@ func main() {
 		fmt.Println("Usage: gopunch --config config.json [--interval 3] [--timeout 5] [--verbose] [--logfile out.log] [--method GET] [--data '{}'] [--concurrency 10] [--export stats.csv] https://example.com [https://another.com ...]")
 		os.Exit(1)
 	}
+	
+	timedLogfile := *logfile
+	if timedLogfile != "" {
+		timestamp := time.Now().Format("20060102_150405")
+		ext := filepath.Ext(timedLogfile)
+		base := timedLogfile[:len(timedLogfile)-len(ext)]
+		timedLogfile = fmt.Sprintf("%s_%s%s", base, timestamp, ext)
+	}
 
 	checker.SetTimeout(time.Duration(*timeout) * time.Second)
-	logger := logger.InitLogger(*logfile)
+	logger := logger.InitLogger(timedLogfile)
 	statistics := stats.NewStats()
 	runner.SetConcurrency(*concurrency)
 
