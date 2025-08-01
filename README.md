@@ -80,7 +80,7 @@ https://github.com - Checks: 1, Average response time: 122.00 ms
 
 ---
 
-## 🛑 Graceful Shutdown
+## 🛑 Shutdown
 
 If running with `--interval`, simply press `Ctrl+C` to stop. GoPunch will print a final summary with statistics.
 
@@ -100,4 +100,4 @@ If running with `--interval`, simply press `Ctrl+C` to stop. GoPunch will print 
 
 ## 📄 License
 
-MIT License © 2025 \ Made by wNyro 🐼
+MIT License © 2025 | Made by wNyro 🐼
