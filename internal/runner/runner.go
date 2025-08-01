@@ -1,16 +1,16 @@
-package main
+package runner
 
 import (
 	"fmt"
+	"github.com/wnyro/gopunch/internal/checker"
+	"github.com/wnyro/gopunch/internal/stats"
 	"log"
 	"os"
 	"sync"
 	"time"
-
-	"github.com/wnyro/gopunch/internal/checker"
 )
 
-func RunCheck(urls []string, logger *log.Logger, stats *Stats, verbose bool) {
+func RunCheck(urls []string, logger *log.Logger, stats *stats.Stats, verbose bool) {
 	var wg sync.WaitGroup
 	wg.Add(len(urls))
 
@@ -44,7 +44,7 @@ func RunCheck(urls []string, logger *log.Logger, stats *Stats, verbose bool) {
 	wg.Wait()
 }
 
-func RunWithInterval(urls []string, interval time.Duration, logger *log.Logger, stats *Stats, verbose bool, sigChan chan os.Signal) {
+func RunWithInterval(urls []string, interval time.Duration, logger *log.Logger, statistics *stats.Stats, verbose bool, sigChan chan os.Signal) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
@@ -52,14 +52,14 @@ func RunWithInterval(urls []string, interval time.Duration, logger *log.Logger, 
 		select {
 		case <-sigChan:
 			fmt.Println("\nExiting...")
-			PrintStats(stats)
+			stats.PrintStats(statistics)
 			os.Exit(0)
 		default:
-			RunCheck(urls, logger, stats, verbose)
+			RunCheck(urls, logger, statistics, verbose)
 			select {
 			case <-sigChan:
 				fmt.Println("\nExiting...")
-				PrintStats(stats)
+				stats.PrintStats(statistics)
 				os.Exit(0)
 			case <-ticker.C:
 			}

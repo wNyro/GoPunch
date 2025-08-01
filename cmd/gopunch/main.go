@@ -3,6 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/wnyro/gopunch/internal/logger"
+	"github.com/wnyro/gopunch/internal/runner"
+	"github.com/wnyro/gopunch/internal/stats"
 	"os"
 	"os/signal"
 	"syscall"
@@ -23,18 +26,18 @@ func main() {
 		fmt.Println("Usage: gopunch --interval 3 --timeout 5 --verbose --logfile out.log https://example.com [https://another.com ...]")
 		os.Exit(1)
 	}
-	
+
 	checker.SetTimeout(time.Duration(*timeout) * time.Second)
 
-	logger := InitLogger(*logfile)
-	stats := NewStats()
+	logger := logger.InitLogger(*logfile)
+	statistics := stats.NewStats()
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
 
 	if *interval == 0 {
-		RunCheck(urls, logger, stats, *verbose)
-		PrintStats(stats)
+		runner.RunCheck(urls, logger, statistics, *verbose)
+		stats.PrintStats(statistics)
 	} else {
-		RunWithInterval(urls, time.Duration(*interval)*time.Second, logger, stats, *verbose, sigChan)
+		runner.RunWithInterval(urls, time.Duration(*interval)*time.Second, logger, statistics, *verbose, sigChan)
 	}
 }
