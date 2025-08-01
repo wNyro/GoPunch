@@ -75,16 +75,12 @@ func RunWithInterval(urls []string, urlConfigs map[string]config.URLConfig, inte
 	for {
 		select {
 		case <-sigChan:
-			fmt.Println("\nExiting...")
-			stats.PrintStats(statistics)
-			os.Exit(0)
+			return
 		default:
 			RunCheck(urls, urlConfigs, logger, statistics, verbose)
 			select {
 			case <-sigChan:
-				fmt.Println("\nExiting...")
-				stats.PrintStats(statistics)
-				os.Exit(0)
+				return
 			case <-ticker.C:
 			}
 		}

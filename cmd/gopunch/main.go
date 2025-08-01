@@ -10,8 +10,8 @@ import (
 	"github.com/wnyro/gopunch/internal/stats"
 	"os"
 	"os/signal"
-	"syscall"
 	"strings"
+	"syscall"
 	"time"
 )
 
@@ -90,17 +90,14 @@ func main() {
 			}
 		}
 	} else {
-		runner.RunWithInterval(urls, urlConfigs, time.Duration(*interval)*time.Second, logger, statistics, *verbose, sigChan)
-		go func() {
-			<-sigChan
-			if *export != "" {
-				if err := statistics.Export(*export); err != nil {
-					fmt.Fprintf(os.Stderr, "Failed to export stats: %v\n", err)
-				}
+		go runner.RunWithInterval(urls, urlConfigs, time.Duration(*interval)*time.Second, logger, statistics, *verbose, sigChan)
+		<-sigChan
+		fmt.Println("\nExiting...")
+		stats.PrintStats(statistics)
+		if *export != "" {
+			if err := statistics.Export(*export); err != nil {
+				fmt.Fprintf(os.Stderr, "Failed to export stats: %v\n", err)
 			}
-			fmt.Println("\nExiting...")
-			stats.PrintStats(statistics)
-			os.Exit(0)
-		}()
+		}
 	}
 }
