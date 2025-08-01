@@ -1,7 +1,3 @@
-Děkuji za poskytnutí souboru `README.md`. Na základě tvých požadavků a aktualizovaného kódu GoPunch (včetně podpory `config.json`, per-URL metod, exportu do CSV/JSON a dalších funkcí) upravím `README.md`, aby odrážel všechny možnosti programu, včetně nových funkcí, příkladů příkazů a konfigurace. Ujistím se, že je stručný, přehledný a pokrývá všechny klíčové aspekty.
-
-### Upravený README.md
-
 # GoPunch
 
 **Dead Simple Uptime Monitoring Tool**  
