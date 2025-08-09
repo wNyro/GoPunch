@@ -207,7 +207,7 @@ For interval-based checks (`--interval`), press `Ctrl+C` to stop. GoPunch will p
 
 ## 📄 License
 
-MIT License © 2025 | Made by wNyro 🐼
+wNyro Restricted Software License © 2025 | Made by wNyro 🐼
 
 
 ---
