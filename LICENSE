@@ -1,21 +1,22 @@
-MIT License
-
+wNyro Software License
 Copyright (c) 2025 wNyro
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+All rights reserved.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to use the Software without restriction, including without limitation the rights to use the Software for personal or commercial purposes, subject to the following conditions:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+1. **No Modifications**: The Software may not be modified, altered, adapted, or reverse-engineered in any manner. Any attempt to modify the source code or any part of the Software is strictly prohibited and constitutes a violation of this license.
+
+2. **No Redistribution or Republishing**: The Software may not be redistributed, republished, uploaded, or shared on any platform, including but not limited to GitHub, GitLab, or any other repository, whether as a custom repository or otherwise, without explicit written permission from the copyright holder (wNyro). This includes, but is not limited to, modifying documentation (e.g., README files) and presenting the Software as a derivative or custom work.
+
+3. **Attribution**: Any use of the Software must include proper attribution to the copyright holder (wNyro) in all copies or substantial portions of the Software.
+
+4. **DMCA Enforcement**: Unauthorized modification, redistribution, or republishing of the Software, including presenting it as one's own work, is considered a violation of this license and may be subject to legal action under the Digital Millennium Copyright Act (DMCA) or other applicable copyright laws.
+
+5. **No Warranty**: The Software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the copyright holder be liable for any claim, damages, or other liability arising from the use of the Software.
+
+Any violation of these terms, including unauthorized modification or redistribution, is strictly prohibited and may result in legal consequences, including but not limited to DMCA takedown notices and other remedies available under copyright law.
+
+This license is governed by the laws of the jurisdiction in which the copyright holder resides, and any disputes arising under this license shall be resolved in accordance with those laws.
+
+For inquiries regarding permissions beyond the scope of this license, contact wNyro.
